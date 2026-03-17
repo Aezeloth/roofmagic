@@ -30,10 +30,10 @@ const Navbar = () => {
                     <div className="brand">
                         <Box className="logo" />
 
-                        <span className="name"> Roofied</span>
+                        <span className="name"> RoofMagic</span>
                     </div>
                     <ul className="links">
-                        <a href="#">Product</a>
+                        <a href="#">Products</a>
                         <a href="#">Price</a>
                         <a href="#">Community</a>
                         <a href="#">Enterprice</a>
