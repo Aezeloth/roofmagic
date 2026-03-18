@@ -20,6 +20,10 @@ const Upload = ({ onComplete }: UploadProps) => {
         setProgress(0);
 
         const reader = new FileReader();
+        reader.onerror = () => {
+            setFile(null);
+            setProgress(0);
+        };
         reader.onloadend = () => {
             const base64Data = reader.result as string;
             
@@ -46,7 +50,7 @@ const Upload = ({ onComplete }: UploadProps) => {
             setIsDragging(true);
         }
     };
-
+git
     const handleDragLeave = (e: React.DragEvent) => {
         e.preventDefault();
         setIsDragging(false);
@@ -57,9 +61,10 @@ const Upload = ({ onComplete }: UploadProps) => {
         setIsDragging(false);
         if (!isSignedIn) return;
 
-        const files = e.dataTransfer.files;
-        if (files && files.length > 0) {
-            processFile(files[0]);
+        const droppedFile = e.dataTransfer.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        if (droppedFile && allowedTypes.includes(droppedFile.type)) {
+            processFile(droppedFile);
         }
     };
 
