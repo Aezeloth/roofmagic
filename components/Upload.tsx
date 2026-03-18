@@ -50,7 +50,6 @@ const Upload = ({ onComplete }: UploadProps) => {
             setIsDragging(true);
         }
     };
-git
     const handleDragLeave = (e: React.DragEvent) => {
         e.preventDefault();
         setIsDragging(false);
