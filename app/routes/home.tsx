@@ -2,7 +2,10 @@ import type { Route } from "./+types/home";
 import Navbar from "../../components/navbar";
 import {ArrowRight, ArrowUpRight, Clock, Layers} from "lucide-react";
 import Button from "../../components/ui/Button";
-
+import Upload from "../../components/Upload";
+import {useNavigate} from "react-router";
+import {useState} from "react";
+import {createProject} from "../../lib/puter.action";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,6 +15,41 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+    const navigate = useNavigate();
+    const[ projects, setProjects] = useState<DesignItem[]>([]);
+
+
+    const handleUploadComplete = async (base64Image: string) => {
+        const newId = Date.now().toString();
+        const name = `Residence ${newId}`;
+
+        const newItem = {
+            id: newId,
+            name,
+            sourceImage: base64Image,
+            rederedImage: undefined,
+            timestamp: Date.now(),
+        }
+
+        const saved = await createProject( { item : newItem, visibility: 'private'});
+
+        if(!saved) {
+            console.error("Failed to create project");
+            return false;
+        }
+
+        setProjects((prev) => [saved, ...prev])
+
+        navigate(`/visualizer/${newId}`, {
+            state: {
+                initialImage: saved.sourceImage,
+                initialRendered: saved.renderedImage || null,
+                name
+            }
+        });
+
+        return true;
+    }
   return (
       <div className="home">
         <Navbar />
@@ -39,7 +77,7 @@ export default function Home() {
                               <h3>Upload your house image</h3>
                               <p>Supports JPG, PNG formats up to 10MB</p>
                       </div>
-                          <p>Upload Images</p>
+                      <Upload onComplete={handleUploadComplete} />
                   </div>
                   </div>
           </section>
@@ -52,28 +90,30 @@ export default function Home() {
                       </div>
                   </div>
                   <div className="projects-grid">
-                      <div className="project-card group">
-                          <div className="preview">
-                              <img src="https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/622691712_1328788742625715_8353730699500210959_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=-soSS4cqFTEQ7kNvwHGVDa3&_nc_oc=AdmR8POZZPliTgSGLEQMZCRgvH5aXGEpLSRYkVvYOdYS7kTHC9k7zL2hVczDe0Vpo8o&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=WeomxygI9hN_4kopOYQu3w&_nc_ss=8&oh=00_AfyttddaBR3yOnXm5JfkY3yeTGMl1rjR_SreNFRxfFnP_g&oe=69BFBD5E"
-                                   alt="Project Preview" />
-                              <div className="badge">
-                                  <span>Community</span>
-                              </div>
-                          </div>
-                          <div className="card-body">
-                              <div>
-                                  <h3>Project in laguna</h3>
-                                  <div className="meta">
-                                      <Clock size={12} />
-                                      <span>{new Date('03.18.2026').toLocaleDateString()}</span>
-                                      <span>By Sai</span>
+                      {projects.map(({id, name, renderedImage, sourceImage, timestamp}) => (
+                          <div key={id} className="project-card group">
+                              <div className="preview">
+                                  <img src={renderedImage || sourceImage}
+                                       alt="Project" />
+                                  <div className="badge">
+                                      <span>Community</span>
                                   </div>
                               </div>
-                              <div className="arrow">
-                                  <ArrowUpRight size={18} />
+                              <div className="card-body">
+                                  <div>
+                                      <h3>{name}</h3>
+                                      <div className="meta">
+                                          <Clock size={12} />
+                                          <span>{new Date(timestamp).toLocaleDateString()}</span>
+                                          <span>By Sai</span>
+                                      </div>
+                                  </div>
+                                  <div className="arrow">
+                                      <ArrowUpRight size={18} />
+                                  </div>
                               </div>
                           </div>
-                      </div>
+                        ))}
                   </div>
               </div>
           </section>
