@@ -24,8 +24,8 @@ export const UNAUTHORIZED_STATUSES = [401, 403];
 // Image Dimensions
 export const IMAGE_RENDER_DIMENSION = 1024;
 
-export const ROOMIFY_RENDER_PROMPT = `
-TASK: Replace the existing roof material in the input image with a Brand New Galvanized Red Metal.
+export const ROOFMAGIC_RENDER_PROMPT = `
+TASK: Replace the existing roof material in the input image with a Brand New Galvanized Blue Navy Metal.
 
 STRICT REQUIREMENTS (do not violate):
 1) PRESERVE ARCHITECTURE: Do not change the shape, height, or footprint of the house. Walls, windows, and landscape must remain identical to the original.
@@ -37,7 +37,7 @@ STRICT REQUIREMENTS (do not violate):
 STRUCTURE & DETAILS:
 - Surface: Replace current tile texture with parallel standing-seam metal ribs.
 - Finish: Semi-gloss industrial coating with a clean, brand-new appearance.
-- Color: Consistent Deep Crimson Red across the entire roof surface.
+- Color: Consistent Blue Navy across the entire roof surface.
 - Details: Render realistic metallic reflections and subtle material-specific depth.
 
 STYLE & RENDERING:
