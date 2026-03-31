@@ -102,6 +102,66 @@ export const getProjects = async () => {
     }
 }
 
+export const getPublicProjects = async (): Promise<DesignItem[]> => {
+    if (!PUTER_WORKER_URL) return [];
+    try {
+        // Plain fetch — no Puter auth needed, worker endpoint is public
+        const response = await fetch(`${PUTER_WORKER_URL}/api/projects/public`);
+        if (!response.ok) return [];
+        const data = (await response.json()) as { projects?: DesignItem[] | null };
+        return Array.isArray(data?.projects) ? data.projects : [];
+    } catch (e) {
+        console.error('Failed to fetch public projects:', e);
+        return [];
+    }
+};
+
+export const shareProject = async ({ id }: { id: string }): Promise<DesignItem | null> => {
+    if (!PUTER_WORKER_URL) {
+        console.warn("Missing VITE_PUTER_WORKER_URL; skipping share.");
+        return null;
+    }
+    try {
+        const response = await puter.workers.exec(`${PUTER_WORKER_URL}/api/projects/share`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+        });
+        if (!response.ok) {
+            console.error("Failed to share project:", await response.text());
+            return null;
+        }
+        const data = (await response.json()) as { project?: DesignItem | null };
+        return data?.project ?? null;
+    } catch (e) {
+        console.error("Failed to share project:", e);
+        return null;
+    }
+};
+
+export const unshareProject = async ({ id }: { id: string }): Promise<DesignItem | null> => {
+    if (!PUTER_WORKER_URL) {
+        console.warn("Missing VITE_PUTER_WORKER_URL; skipping unshare.");
+        return null;
+    }
+    try {
+        const response = await puter.workers.exec(`${PUTER_WORKER_URL}/api/projects/unshare`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+        });
+        if (!response.ok) {
+            console.error("Failed to unshare project:", await response.text());
+            return null;
+        }
+        const data = (await response.json()) as { project?: DesignItem | null };
+        return data?.project ?? null;
+    } catch (e) {
+        console.error("Failed to unshare project:", e);
+        return null;
+    }
+};
+
 export const getProjectById = async ({ id }: { id: string }) => {
     if (!PUTER_WORKER_URL) {
         console.warn("Missing VITE_PUTER_WORKER_URL; skipping project fetch.");

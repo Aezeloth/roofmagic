@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.puter.com)",
+      "WebSearch",
+      "WebFetch(domain:developer.puter.com)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

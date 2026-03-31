@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {useNavigate, useOutletContext, useParams} from "react-router";
 import {generate3DView} from "../../lib/ai.action";
 import {Box, Download, RefreshCcw, Share2, X} from "lucide-react";
 import Button from "../../components/ui/Button";
-import {createProject, getProjectById} from "../../lib/puter.action";
+import {createProject, getProjectById, shareProject, unshareProject} from "../../lib/puter.action";
 import {ReactCompareSlider, ReactCompareSliderImage} from "react-compare-slider";
 
 const VisualizerId = () => {
@@ -17,9 +17,32 @@ const VisualizerId = () => {
     const [isProjectLoading, setIsProjectLoading] = useState(true)
 
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isSharing, setIsSharing] = useState(false);
     const [currentImage, setCurrentImage] = useState<string | null>(null);
 
     const handleBack = () => navigate('/');
+
+    const handleShare = async () => {
+        if (!id || isSharing) return;
+        setIsSharing(true);
+        try {
+            const updated = await shareProject({ id });
+            if (updated) setProject(updated);
+        } finally {
+            setIsSharing(false);
+        }
+    };
+
+    const handleUnshare = async () => {
+        if (!id || isSharing) return;
+        setIsSharing(true);
+        try {
+            const updated = await unshareProject({ id });
+            if (updated) setProject(updated);
+        } finally {
+            setIsSharing(false);
+        }
+    };
     const handleExport = async () => {
         if (!currentImage) return;
         try {
@@ -43,7 +66,11 @@ const VisualizerId = () => {
         if(!id || !item.sourceImage) return;
         try {
             setIsProcessing(true);
-            const result = await generate3DView({ sourceImage : item.sourceImage });
+            const result = await generate3DView({
+            sourceImage: item.sourceImage,
+            roofMaterial: item.roofMaterial,
+            roofColor: item.roofColor,
+        });
             if(result.renderedImage) {
                 setCurrentImage(result.renderedImage);
 
@@ -147,8 +174,14 @@ const VisualizerId = () => {
                             >
                                 <Download className="w-4 h-4 mr-2" />Export
                             </Button>
-                            <Button size="sm" onClick={() => {}} className="share">
-                                <Share2 className="w-4 h-4 mr-2" /> Share
+                            <Button
+                                size="sm"
+                                onClick={project?.isPublic ? handleUnshare : handleShare}
+                                className="share"
+                                disabled={isSharing}
+                            >
+                                <Share2 className="w-4 h-4 mr-2" />
+                                {isSharing ? '...' : project?.isPublic ? 'Unshare' : 'Share'}
                             </Button>
                         </div>
                     </div>
@@ -190,12 +223,12 @@ const VisualizerId = () => {
                         {project?.sourceImage && currentImage ? (
                             <ReactCompareSlider
                                 defaultValue={50}
-                                style={{width: '100%', height: 'auto'}}
+                                style={{width: '100%', height: '100%'}}
                                 itemOne={
                                     <ReactCompareSliderImage src={project?.sourceImage}  alt="before" className="compare-img" />
                                 }
                                 itemTwo={
-                                    <ReactCompareSliderImage src={currentImage || project?.renderedImage}  alt="after" className="compare-img" />
+                                    <ReactCompareSliderImage src={(currentImage || project?.renderedImage) ?? undefined}  alt="after" className="compare-img" />
                                 }
                             />
                         ) : (

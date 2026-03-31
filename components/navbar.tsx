@@ -33,9 +33,9 @@ const Navbar = () => {
                         <span className="name"> RoofMagic</span>
                     </div>
                     <ul className="links">
-                        <a href="#">Products</a>
-                        <a href="#">Price</a>
-                        <a href="#">Community</a>
+                        <a href="#">Home</a>
+                        <a href="#">RoofMagic</a>
+                        <a href="#">Contact Us</a>
                         <a href="#">Enterprice</a>
                     </ul>
                 </div>

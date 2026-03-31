@@ -24,24 +24,25 @@ export const UNAUTHORIZED_STATUSES = [401, 403];
 // Image Dimensions
 export const IMAGE_RENDER_DIMENSION = 1024;
 
-export const ROOFMAGIC_RENDER_PROMPT = `
-TASK: Replace the existing roof material in the input image with a Brand New Galvanized Blue Navy Metal.
+export const buildRoofPrompt = (material: string, hexColor: string): string => `
+TASK: Replace ONLY the existing roof material in the input image with a Brand New ${material} ${hexColor}. Every other pixel must remain untouched.
 
 STRICT REQUIREMENTS (do not violate):
-1) PRESERVE ARCHITECTURE: Do not change the shape, height, or footprint of the house. Walls, windows, and landscape must remain identical to the original.
-2) MATCH ROOF GEOMETRY: The pitch, ridges, and slopes must follow the exact lines of the original structure. No new gables or style changes.
-3) CLEAN EDGES: The new material must meet the fascia and gutters perfectly. No texture "bleeding" onto the walls.
-4) NO ARTIFACTS: Do not add chimneys, vents, or solar panels not present in the original image.
-5) REALISTIC LIGHTING: Highlights and shadows must match the directional daylight of the original scene.
+1) IDENTICAL FRAMING: Output must be pixel-for-pixel the same crop, zoom, field of view, and composition as the input. Do not zoom in, zoom out, pan, rotate, or crop differently. The house and all surroundings must occupy the exact same position in the frame.
+2) PRESERVE ARCHITECTURE: Do not change the shape, height, or footprint of the house. Walls, windows, doors, and landscape must remain identical to the original.
+3) MATCH ROOF GEOMETRY: The pitch, ridges, and slopes must follow the exact lines of the original structure. No new gables or style changes.
+4) CLEAN EDGES: The new material must meet the fascia and gutters perfectly. No texture "bleeding" onto the walls.
+5) NO ARTIFACTS: Do not add chimneys, vents, or solar panels not present in the original image.
+6) REALISTIC LIGHTING: Highlights and shadows must match the directional daylight of the original scene.
 
 STRUCTURE & DETAILS:
-- Surface: Replace current tile texture with parallel standing-seam metal ribs.
+- Surface: Replace current roof texture with ${material} material.
 - Finish: Semi-gloss industrial coating with a clean, brand-new appearance.
-- Color: Consistent Blue Navy across the entire roof surface.
-- Details: Render realistic metallic reflections and subtle material-specific depth.
+- Color: Consistent ${hexColor} across the entire roof surface.
+- Details: Render realistic material-specific reflections and subtle depth.
 
 STYLE & RENDERING:
-- Perspective: Maintain the original high-angle aerial perspective.
+- Perspective: Maintain the EXACT original camera angle, height, and distance — do not alter perspective.
 - Clarity: High-definition architectural photography; sharp focus on roof texture.
 - Output: Professional real estate visualization; no watermarks, no distorted geometry, no text.
 `.trim();

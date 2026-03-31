@@ -25,6 +25,8 @@ interface DesignItem {
     sharedBy?: string | null;
     sharedAt?: string | null;
     isPublic?: boolean;
+    roofMaterial?: string | null;
+    roofColor?: string | null;
 }
 
 interface DesignConfig {
@@ -68,7 +70,7 @@ interface VisualizerProps {
 }
 
 interface UploadProps {
-    onComplete: (base64File: string) => Promise<boolean | void> | boolean | void;
+    onFileReady: (base64File: string) => void;
     className?: string;
 }
 
@@ -124,4 +126,6 @@ interface CreateProjectParams {
 interface Generate3DViewParams {
     sourceImage: string;
     projectId?: string | null;
+    roofMaterial?: string | null;
+    roofColor?: string | null;
 }
