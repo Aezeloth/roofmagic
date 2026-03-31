@@ -84,7 +84,7 @@ const Upload = ({ onComplete }: UploadProps) => {
                     <div className={`dropzone ${isDragging ? 'is-dragging' : ''}`}>
                         <input type="file"
                                className="drop-input"
-                               accept=".jpg,.jpeg,.png"
+                               accept=".jpg,.jpeg,.png,.webp"
                                onChange={handleChange}
                                disabled={!isSignedIn}/>
 
