@@ -81,7 +81,7 @@ export default function Home() {
               <h1>Building a safer roofs and imagine your roof with roofmagic</h1>
               <p className="subtitle">AI-First imagine roof that helps you visualize your future roof</p>
               <div className="actions">
-                  <a href="#Upload" className="cta">Start Building <ArrowRight className="icon" /></a>
+                  <a href="#upload" className="cta">Start Building <ArrowRight className="icon" /></a>
                   <Button variant="outline" size="lg" className="Demo">Watch Demo</Button>
               </div>
 
