@@ -20,15 +20,23 @@ const VisualizerId = () => {
     const [currentImage, setCurrentImage] = useState<string | null>(null);
 
     const handleBack = () => navigate('/');
-    const handleExport = () => {
+    const handleExport = async () => {
         if (!currentImage) return;
-
-        const link = document.createElement('a');
-        link.href = currentImage;
-        link.download = `rendered-roof-${id}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        try {
+            const isDataUrl = currentImage.startsWith("data:");
+            const href = isDataUrl
+                ? currentImage
+                : URL.createObjectURL(await (await fetch(currentImage)).blob());
+            const link = document.createElement("a");
+            link.href = href;
+            link.download = `rendered-roof-${id ?? "image"}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            if (!isDataUrl) URL.revokeObjectURL(href);
+        } catch (error) {
+            console.error("Export failed", error);
+        }
     }
 
     const runGeneration = async (item: DesignItem) => {
