@@ -385,21 +385,15 @@
         }
 
         .compare-stage {
-          @apply relative bg-zinc-100 overflow-hidden;
-          aspect-ratio: 1 / 1;
-
-          .react-compare-slider {
-            width: 100% !important;
-            height: 100% !important;
-          }
+          @apply relative bg-zinc-100 overflow-hidden w-full;
         }
 
         .compare-fallback {
-          @apply flex items-center justify-center w-full h-full;
+          @apply flex items-center justify-center;
         }
 
         .compare-img {
-          @apply w-full h-full object-cover block;
+          @apply w-full h-auto object-contain block;
         }
       }
     }

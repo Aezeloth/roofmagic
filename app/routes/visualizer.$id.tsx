@@ -176,12 +176,16 @@ const VisualizerId = () => {
                             </Button>
                             <Button
                                 size="sm"
-                                onClick={project?.isPublic ? handleUnshare : handleShare}
+                                onClick={
+                                    project?.isPublic
+                                        ? project.ownerId === userId ? handleUnshare : undefined
+                                        : handleShare
+                                }
                                 className="share"
-                                disabled={isSharing}
+                                disabled={isSharing || (project?.isPublic && project.ownerId !== userId)}
                             >
                                 <Share2 className="w-4 h-4 mr-2" />
-                                {isSharing ? '...' : project?.isPublic ? 'Unshare' : 'Share'}
+                                {isSharing ? '...' : project?.isPublic ? (project.ownerId === userId ? 'Unshare' : 'Shared') : 'Share'}
                             </Button>
                         </div>
                     </div>
@@ -223,7 +227,7 @@ const VisualizerId = () => {
                         {project?.sourceImage && currentImage ? (
                             <ReactCompareSlider
                                 defaultValue={50}
-                                style={{width: '100%', height: '100%'}}
+                                style={{width: '100%', height: 'auto'}}
                                 itemOne={
                                     <ReactCompareSliderImage src={project?.sourceImage}  alt="before" className="compare-img" />
                                 }

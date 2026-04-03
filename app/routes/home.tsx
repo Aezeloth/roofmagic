@@ -38,7 +38,10 @@ export default function Home() {
 
     const handleConfirm = async () => {
         if (!canConfirm || isCreatingProjectRef.current) return;
-        if (!isSignedIn) { await signIn(); return; }
+        if (!isSignedIn) {
+            const authed = await signIn();
+            if (!authed) return;
+        }
         isCreatingProjectRef.current = true;
         setIsConfirming(true);
         try {
