@@ -1,8 +1,17 @@
 .DS_Store
 .env
+.env.*
 .env.local
 /node_modules/
 
 # React Router
 /.react-router/
 /build/
+
+# Claude Code
+.claude/
+CLAUDE.md
+
+# IDE
+.idea/
+.vscode/

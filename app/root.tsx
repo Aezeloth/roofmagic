@@ -69,15 +69,21 @@ export default function App() {
   }
 
   useEffect(() => {
-    refreshAuth();
+    // Only auto-check auth if the user was previously signed in.
+    // This prevents the Puter popup from appearing for guests on page load.
+    if (localStorage.getItem('roofmagic_signed_in') === '1') {
+      refreshAuth();
+    }
   }, []);
 
-    const signIn = async () => {
-      await puterSignIn();
-      return await refreshAuth();
-    }
+  const signIn = async () => {
+    await puterSignIn();
+    localStorage.setItem('roofmagic_signed_in', '1');
+    return await refreshAuth();
+  }
   const signOut = async () => {
-      puterSignOut();
+    puterSignOut();
+    localStorage.removeItem('roofmagic_signed_in');
     return await refreshAuth();
   }
   return (

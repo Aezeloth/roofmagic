@@ -1,5 +1,5 @@
 import {puter} from "@heyputer/puter.js";
-import {ROOFMAGIC_RENDER_PROMPT} from "./constants";
+import {buildRoofPrompt} from "./constants";
 
 export const fetchAsDataUrl = (url: string): Promise<string> => {
   return fetch(url)
@@ -27,7 +27,15 @@ export const fetchAsDataUrl = (url: string): Promise<string> => {
     });
 };
 
-export const generate3DView = async ({ sourceImage }: Generate3DViewParams) => {
+const getImageDimensions = (dataUrl: string): Promise<{w: number, h: number}> =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+    img.onerror = () => resolve({ w: 1024, h: 1024 });
+    img.src = dataUrl;
+  });
+
+export const generate3DView = async ({ sourceImage, roofMaterial, roofColor }: Generate3DViewParams) => {
   const dataUrl = sourceImage.startsWith('data:')
   ? sourceImage
       : await fetchAsDataUrl(sourceImage);
@@ -37,12 +45,15 @@ export const generate3DView = async ({ sourceImage }: Generate3DViewParams) => {
 
   if(!mimeType || !base64Data) throw new Error('Invalid source image payload');
 
-  const response = await puter.ai.txt2img(ROOFMAGIC_RENDER_PROMPT, {
+  const { w, h } = await getImageDimensions(dataUrl);
+  const prompt = buildRoofPrompt(roofMaterial || 'Galvanized Iron', roofColor || '#1B3F6B');
+
+  const response = await puter.ai.txt2img(prompt, {
       provider: 'gemini',
       model: 'gemini-2.5-flash-image-preview',
       input_image: base64Data,
       input_image_mime_type: mimeType,
-      ratio: { w:1024, h: 1024 }
+      ratio: { w, h }
   });
 
   const rawImageUrl = (response as HTMLImageElement).src ?? null;

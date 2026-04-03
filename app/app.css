@@ -5,7 +5,7 @@
   --color-foreground: #1a1a1a;
   --color-surface: #ffffff;
   --color-surface-highlight: #f3f4f6;
-  --color-primary: #f97316;
+  --color-primary: #000080;
   --color-secondary: #3b82f6;
   --color-accent: #8b5cf6;
   --font-serif: "Instrument Serif", serif;
@@ -59,7 +59,7 @@
     @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
 
     &.btn--primary {
-      @apply bg-primary text-white hover:bg-[#EA580C] shadow-sm;
+      @apply bg-primary text-white hover:bg-[#000080] shadow-sm;
     }
 
     &.btn--secondary {
@@ -149,7 +149,7 @@
         }
 
         .cta {
-          @apply inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 text-xs uppercase tracking-wide bg-primary text-white hover:bg-[#EA580C] shadow-sm;
+          @apply inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 text-xs uppercase tracking-wide bg-primary text-white hover:bg-[#000080] shadow-sm;
         }
       }
     }
@@ -162,7 +162,7 @@
       @apply bg-white rounded-xl shadow-2xl max-w-md w-full p-6 text-center border border-zinc-200;
 
       .icon {
-        @apply w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4;
+        @apply w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4;
 
         .alert {
           @apply text-primary w-6 h-6;
@@ -181,7 +181,7 @@
         @apply flex flex-col space-y-3;
 
         .confirm {
-          @apply bg-primary hover:bg-orange-600 text-white;
+          @apply bg-primary hover:bg-[#000060] text-white;
         }
 
         .cancel {
@@ -198,10 +198,10 @@
       @apply relative h-48 rounded-xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center cursor-pointer bg-zinc-50 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-100;
 
       &.is-dragging {
-        @apply border-primary bg-orange-50;
+        @apply border-primary bg-blue-50;
 
         .drop-icon {
-          @apply bg-orange-100 text-primary;
+          @apply bg-blue-100 text-primary;
         }
       }
 
@@ -322,7 +322,7 @@
           @apply flex flex-wrap items-center gap-3;
 
           .export {
-            @apply bg-primary text-white hover:bg-orange-600 h-9 border-none shadow-sm;
+            @apply bg-primary text-white hover:bg-[#000060] h-9 border-none shadow-sm;
           }
 
           .share {
@@ -385,7 +385,7 @@
         }
 
         .compare-stage {
-          @apply relative bg-zinc-100 overflow-hidden;
+          @apply relative bg-zinc-100 overflow-hidden w-full;
         }
 
         .compare-fallback {
@@ -393,7 +393,7 @@
         }
 
         .compare-img {
-          @apply w-full h-auto object-contain;
+          @apply w-full h-auto object-contain block;
         }
       }
     }
@@ -433,7 +433,7 @@
         @apply flex flex-col sm:flex-row gap-4 justify-center mb-16;
 
         .cta {
-          @apply inline-flex items-center justify-center rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background px-8 py-3 text-sm uppercase tracking-wide font-bold bg-primary text-white hover:bg-[#ea580c] shadow-md;
+          @apply inline-flex items-center justify-center rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background px-8 py-3 text-sm uppercase tracking-wide font-bold bg-primary text-white hover:bg-[#000080] shadow-md;
 
           .icon {
             @apply ml-2 w-4 h-4;
@@ -452,8 +452,8 @@
           @apply absolute inset-0 opacity-40 pointer-events-none;
 
           background-image:
-                  linear-gradient(#3b82f6 1px, transparent 1px),
-                  linear-gradient(90deg, #3b82f6 1px, transparent 1px);
+            linear-gradient(#3b82f6 1px, transparent 1px),
+            linear-gradient(90deg, #3b82f6 1px, transparent 1px);
 
           background-size: 60px 60px;
         }
@@ -461,14 +461,62 @@
         .upload-card {
           @apply relative w-full max-w-xl bg-white rounded-2xl shadow-xl overflow-hidden border border-zinc-100 p-8 z-10 transition-transform hover:scale-[1.01] duration-500;
 
+          .roof-config {
+            @apply mb-5 space-y-3;
+
+            .material-selector {
+              @apply flex gap-2;
+
+              .material-btn {
+                @apply flex-1 py-2 px-3 text-sm font-medium rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 cursor-pointer transition-all duration-150 hover:border-primary hover:text-primary;
+
+                &.is-selected {
+                  @apply border-primary bg-blue-50 text-primary shadow-sm;
+                }
+              }
+            }
+
+            .color-picker-row {
+              @apply flex items-center;
+
+              .color-picker-label {
+                @apply flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg border border-zinc-200 bg-zinc-50 hover:border-primary transition-colors w-full;
+
+                .color-swatch {
+                  @apply w-6 h-6 rounded-md border border-zinc-300 shrink-0;
+                }
+
+                .color-input {
+                  @apply w-0 h-0 opacity-0 absolute;
+                }
+
+                .color-text {
+                  @apply text-sm font-mono text-zinc-600;
+                }
+              }
+            }
+          }
+
+          .confirm-row {
+            @apply mt-4 flex flex-col items-center gap-2;
+
+            .confirm-hint {
+              @apply text-xs text-zinc-400;
+            }
+
+            .confirm-btn {
+              @apply w-full;
+            }
+          }
+
           .upload-head {
             @apply text-center mb-6;
 
             .upload-icon {
-              @apply w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3;
+              @apply w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3;
 
               .icon {
-                @apply text-orange-500 w-6 h-6;
+                @apply text-primary w-6 h-6;
               }
             }
 
@@ -524,10 +572,26 @@
               }
 
               .badge {
-                @apply absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2 py-1 rounded-md border border-zinc-200 shadow-sm;
+                @apply absolute top-3 left-3 backdrop-blur-md px-2 py-1 rounded-md shadow-sm;
 
                 span {
-                  @apply text-[10px] font-bold uppercase tracking-wider text-zinc-800;
+                  @apply text-[10px] font-bold uppercase tracking-wider;
+                }
+
+                &.badge-community {
+                  @apply bg-blue-500/90 border border-blue-400;
+
+                  span {
+                    @apply text-white;
+                  }
+                }
+
+                &.badge-private {
+                  @apply bg-white/90 border border-zinc-200;
+
+                  span {
+                    @apply text-zinc-800;
+                  }
                 }
               }
             }
